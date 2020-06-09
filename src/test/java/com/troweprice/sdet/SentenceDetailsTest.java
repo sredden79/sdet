@@ -12,7 +12,7 @@ public class SentenceDetailsTest {
 		SentenceDetails s = new SentenceDetails("The cow jumped over the moon.");
 		assertEquals("jumped,6", s.returnLargestWordDetails());
 		assertEquals("[jumped],6", s.returnAllLargestWordsDetails());
-		assertEquals("The,3", s.returnShortestWordDetails());
+		assertEquals("the,3", s.returnShortestWordDetails());
 		assertEquals("[cow, the],3", s.returnAllShortestWordsDetails());
 
 	}

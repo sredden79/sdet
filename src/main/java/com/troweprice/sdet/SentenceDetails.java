@@ -1,11 +1,6 @@
 package com.troweprice.sdet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +17,10 @@ public class SentenceDetails {
 
     protected static final Logger logger = LoggerFactory.getLogger(SentenceDetails.class);
 
-    private String shortestWord = "";
-    private List<String> shortestWords = new ArrayList<String>();
-    private String longestWord = "";
-    private List<String> longestWords = new ArrayList<String>();
+    private String firstShortestWord = "";
+    private Set<String> setOfShortestWords = new TreeSet<>();
+    private String firstLongestWord = "";
+    private Set<String> setOfLongestWords = new TreeSet<>();
     private String sentence = "";
 
     private String OUTPUT_FORMAT = "%s,%d";
@@ -43,51 +38,47 @@ public class SentenceDetails {
         }
     }
 
+    private String formatWord(String word)
+    {
+        return word.toLowerCase();
+    }
+
     private void processSentence() {
 
         List<String> words = new ArrayList<String>(Arrays.asList(sentence.split("[^a-zA-Z]+")));
-
-        Set<String> setOfShortestWords = new HashSet<String>();
-        Set<String> setOfLongestWords = new HashSet<String>();
 
         words.remove("");
 
         if (words.size() == 0)
             return;
 
-        shortestWord = words.get(0);
-        longestWord = words.get(0);
+        firstShortestWord = formatWord(words.get(0));
+        firstLongestWord = formatWord(words.get(0));
 
         for (String word : words)
         {
-            if (shortestWord.length() > word.length())
+            if (firstShortestWord.length() > word.length())
             {
-                shortestWord = word;
+                firstShortestWord = formatWord(word);
                 setOfShortestWords.clear();
-                setOfShortestWords.add(shortestWord.toLowerCase());
-
+                setOfShortestWords.add(firstShortestWord);
             }
-            else if (shortestWord.length() == word.length())
+            else if (firstShortestWord.length() == word.length())
             {
-                setOfShortestWords.add(word.toLowerCase());
+                setOfShortestWords.add(formatWord(word));
             }
 
-            if (longestWord.length() < word.length())
+            if (firstLongestWord.length() < word.length())
             {
-                longestWord = word;
+                firstLongestWord = formatWord(word);
                 setOfLongestWords.clear();
-                setOfLongestWords.add(longestWord.toLowerCase());
+                setOfLongestWords.add(formatWord(word));
             }
-            else if (longestWord.length() == word.length())
+            else if (firstLongestWord.length() == word.length())
             {
-                setOfLongestWords.add(word.toLowerCase());
+                setOfLongestWords.add(formatWord(word));
             }
         }
-
-        shortestWords.addAll(setOfShortestWords);
-        Collections.sort(shortestWords);
-        longestWords.addAll(setOfLongestWords);
-        Collections.sort(longestWords);
 
     }
 
@@ -100,7 +91,7 @@ public class SentenceDetails {
      */
     public String returnLargestWordDetails()
     {
-        return String.format(OUTPUT_FORMAT,longestWord, longestWord.length());
+        return String.format(OUTPUT_FORMAT,firstLongestWord, firstLongestWord.length());
     }
 
     /**
@@ -113,7 +104,7 @@ public class SentenceDetails {
      */
     public String returnAllLargestWordsDetails()
     {
-        return String.format(OUTPUT_FORMAT,longestWords, longestWord.length());
+        return String.format(OUTPUT_FORMAT,setOfLongestWords, firstLongestWord.length());
     }
 
     /**
@@ -125,7 +116,7 @@ public class SentenceDetails {
      */
     public String returnShortestWordDetails()
     {
-        return String.format(OUTPUT_FORMAT, shortestWord, shortestWord.length());
+        return String.format(OUTPUT_FORMAT, firstShortestWord, firstShortestWord.length());
     }
 
 
@@ -139,7 +130,7 @@ public class SentenceDetails {
      */
     public String returnAllShortestWordsDetails()
     {
-        return String.format(OUTPUT_FORMAT, shortestWords, shortestWord.length());
+        return String.format(OUTPUT_FORMAT, setOfShortestWords, firstShortestWord.length());
     }
 
 
