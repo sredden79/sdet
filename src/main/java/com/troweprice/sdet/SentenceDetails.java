@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Keeps details of the shortest and longest word for provided sentence.
- * Where a word is any sequence of letters [a-zA-Z] seperated by any other character. 
+ * Keeps details of the first occurring shortest and longest word for the provided sentence.
+ * Where a word is any sequence of letters [a-zA-Z] separated by any other character.
  * 
  * @author Scott Redden
  *
@@ -19,7 +19,7 @@ public class SentenceDetails {
 	
 	protected static final Logger logger = LoggerFactory.getLogger(SentenceDetails.class);
 	
-    private String sortestWord = "";
+    private String shortestWord = "";
     private String longestWord = "";
     private String sentence = "";
 
@@ -47,14 +47,14 @@ public class SentenceDetails {
         if (words.size() == 0)
             return;
 
-        sortestWord = words.get(0);
+        shortestWord = words.get(0);
         longestWord = words.get(0);
 
         for (String word : words)
         {
-            if (sortestWord.length() > word.length())
+            if (shortestWord.length() > word.length())
             {
-                sortestWord = word;
+                shortestWord = word;
             }
 
             if (longestWord.length() < word.length())
@@ -67,8 +67,8 @@ public class SentenceDetails {
 
     /**
      * 
-     * @return The longest word in the sentence and its length seperated by a comma
-     *         "[word],[word.length]"
+     * @return The longest word in the sentence and its length separated by a comma
+     *         "word,word.length"
      *          A sentence which does not contain any valid words will return ",0"
      *
      */
@@ -79,14 +79,14 @@ public class SentenceDetails {
 
     /**
      * 
-     * @return The shortest word in the sentence and its length seperated by a comma
-     *         "[word],[word.length]"
+     * @return The shortest word in the sentence and its length separated by a comma
+     *         "word,word.length"
      *          A sentence which does not contain any valid words will return ",0"
      *
      */
     public String returnShortestWordDetails()
     {
-        return String.format(OUTPUT_FORMAT, sortestWord, sortestWord.length());
+        return String.format(OUTPUT_FORMAT, shortestWord, shortestWord.length());
     }
 
 
