@@ -78,4 +78,13 @@ public class SentenceDetailsTest {
 		
 	}
 
+	@Test
+	public void testSentenceStartWithDoubleNonWordGaps() {
+
+		SentenceDetails s = new SentenceDetails("This is a double gap  followed by numbers 1234! What will happen?");
+		assertEquals("followed,8", s.returnLargestWordDetails());
+		assertEquals("a,1", s.returnShortestWordDetails());
+
+	}
+
 }
