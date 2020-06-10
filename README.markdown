@@ -20,12 +20,10 @@ Where SENTENCE for example "The cow jumped over the moon."
 
 will return the following :
 
-`[main] INFO com.troweprice.sdet.Sentence - The cow jumped over the moon.`
-
-`[main] INFO com.troweprice.sdet.SentenceApp - Longest  : jumped,6`
-
-`[main] INFO com.troweprice.sdet.SentenceApp - Shortest : The,3`
-
+[main] INFO com.troweprice.sdet.SentenceDetails - The cow jumped over the moon.
+[main] INFO com.troweprice.sdet.SentenceApp - Longest  : 'jumped,6'
+[main] INFO com.troweprice.sdet.SentenceApp - Shortest : 'The,3'
+[main] INFO com.troweprice.sdet.SentenceApp - Total time to find min and max word was : '24ms'
 
 ## History
 
