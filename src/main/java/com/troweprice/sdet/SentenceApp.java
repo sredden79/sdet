@@ -17,7 +17,9 @@ public class SentenceApp {
 		long timerStart = System.currentTimeMillis();
 		SentenceDetails s = new SentenceDetails(args[0]);
 		logger.info("Longest  : '{}'",s.returnLargestWordDetails());
+		logger.info("All Longest Words  : '{}'",s.returnAllLargestWordsDetails());
 		logger.info("Shortest : '{}'",s.returnShortestWordDetails());
+		logger.info("All Shortest Words  : '{}'",s.returnAllShortestWordsDetails());
 		long timerEnd = System.currentTimeMillis();
 		logger.info("Total time to find min and max word was : '{}ms'",timerEnd-timerStart);
 				

@@ -1,8 +1,6 @@
 package com.troweprice.sdet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +16,18 @@ import org.slf4j.LoggerFactory;
 public class SentenceDetails {
 	
 	protected static final Logger logger = LoggerFactory.getLogger(SentenceDetails.class);
-	
+
+    List<String> words = null;
     private String shortestWord = "";
+    private List<String> setShortestWords = null;
     private String longestWord = "";
-    private String sentence = "";
+    private List<String> setLongestWords = null;
+
 
     private String OUTPUT_FORMAT = "%s,%d";
 
     /**
+     * Splits the sentence into words [a-zA-Z]+ tracking the shortest and longest.
      *
      * @param sentence to extract details from
      */
@@ -33,19 +35,19 @@ public class SentenceDetails {
     {
     	logger.info(sentence);
         if (sentence != null) {
-            this.sentence = sentence;
-            processSentence();
+            words = new ArrayList<String>(Arrays.asList(sentence.split("[^a-zA-Z]+")));
+            words.remove("");
+            if (words.size() != 0) {
+                processSentence();
+            }
         }
     }
 
+    /**
+     * Finds the first shortest and longest word which appears in the sentence
+     * (converted to lowercase)
+     */
     private void processSentence() {
-
-        List<String> words = new ArrayList<String>(Arrays.asList(sentence.split("[^a-zA-Z]+")));
-
-        words.remove("");
-
-        if (words.size() == 0)
-            return;
 
         shortestWord = words.get(0);
         longestWord = words.get(0);
@@ -63,6 +65,42 @@ public class SentenceDetails {
             }
         }
 
+        shortestWord = formatWord(shortestWord);
+        longestWord = formatWord(longestWord);
+
+    }
+
+    private String formatWord(String word)
+    {
+        return word.toLowerCase();
+    }
+
+    /**
+     *
+     * @param wordLength the length of the word wanted to be extracted from sentence
+     * @return a alphabetically ordered unique list of words of given length from the sentence
+     */
+    private List<String> findAllWordsOfLength(int wordLength)
+    {
+        if (wordLength == 0)
+        {
+            return new ArrayList<String>();
+        }
+        
+        Set<String> wordsOfRequiredLength = new TreeSet<String>(String::compareTo);
+
+        for (String word : words)
+        {
+            if (word.length() == wordLength)
+            {
+                wordsOfRequiredLength.add(formatWord(word));
+            }
+        }
+
+        List<String> orderedWords = new ArrayList<String>();
+        orderedWords.addAll(wordsOfRequiredLength);
+
+        return orderedWords;
     }
 
     /**
@@ -78,6 +116,23 @@ public class SentenceDetails {
     }
 
     /**
+     *
+     * @return The longest words in the sentence (lower case and, sorted alphabetically)
+     *         and its length separated by a comma
+     *         "[word1, word2],word.length"
+     *         A sentence which does not contain any valid words will return ",0"
+     *
+     */
+    public String returnAllLargestWordsDetails()
+    {
+        if (setLongestWords == null)
+        {
+            setLongestWords = findAllWordsOfLength(longestWord.length());
+        }
+        return String.format(OUTPUT_FORMAT, setLongestWords, longestWord.length());
+    }
+
+    /**
      * 
      * @return The shortest word in the sentence and its length separated by a comma
      *         "word,word.length"
@@ -87,6 +142,23 @@ public class SentenceDetails {
     public String returnShortestWordDetails()
     {
         return String.format(OUTPUT_FORMAT, shortestWord, shortestWord.length());
+    }
+
+    /**
+     *
+     * @return The shortest words in the sentence (lower case and, sorted alphabetically)
+     *         and its length separated by a comma
+     *         "[word1, word2],word.length"
+     *         A sentence which does not contain any valid words will return ",0"
+     *
+     */
+    public String returnAllShortestWordsDetails()
+    {
+        if (setShortestWords == null)
+        {
+            setShortestWords = findAllWordsOfLength(shortestWord.length());
+        }
+        return String.format(OUTPUT_FORMAT, setShortestWords, shortestWord.length());
     }
 
 
